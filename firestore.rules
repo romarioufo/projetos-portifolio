@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /settings/{document} {
+      allow read: if true;
+      allow write: if true; // Em ambiente real, validar se user é ADMIN
+    }
+    match /menu/{document} {
+      allow read: if true;
+      allow write: if true; // Em ambiente real, validar se user é ADMIN
+    }
+    match /system/{document} {
+      allow read, write: if true;
+    }
+    match /orders/{document} {
+      allow read: if true; // Todos podem ler (para ver status temporário ou painel admin)
+      allow write: if true; // Todos podem criar pedidos e devs podem atualizar status
+    }
+    match /caixa/{document} {
+      allow read, write: if true;
+    }
+    match /users/{userId} {
+      allow read, write: if true; // Perfil de cliente
+    }
+    match /customers/{document} {
+      allow read, write: if true;
+    }
+    match /rewards/{document} {
+      allow read, write: if true;
+    }
+    match /points_log/{document} {
+      allow read, write: if true;
+    }
+    match /coupons/{document} {
+      allow read, write: if true;
+    }
+    match /supplies/{document} {
+      allow read, write: if true;
+    }
+    match /supply_purchases/{document} {
+      allow read, write: if true;
+    }
+    match /supply_usage/{document} {
+      allow read, write: if true;
+    }
+    match /drivers/{document} {
+      allow read, write: if true; // Entregadores leem/atualizam localização; admin gerencia
+    }
+  }
+}
