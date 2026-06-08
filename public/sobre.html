@@ -191,6 +191,94 @@
     .exp-item { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 1rem; }
     .skills-section, .exp-section, .about-cta { padding: 4rem 1.5rem; }
     footer { flex-direction:column; gap:.8rem; text-align:center; }
+    .nav-burger { display: flex; }
+  }
+
+  /* ── HAMBURGER & MOBILE NAV ────────────────────────────────── */
+  .nav-burger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    background: none; border: none; cursor: none;
+    padding: .5rem; z-index: 200; position: relative;
+  }
+  .nav-burger span {
+    display: block; width: 22px; height: 1px;
+    background: var(--cream);
+    transition: transform .45s cubic-bezier(.16,1,.3,1),
+                opacity .3s,
+                width .35s cubic-bezier(.16,1,.3,1);
+    transform-origin: center;
+  }
+  .nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity: 0; width: 0; }
+  .nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .nav-mobile {
+    position: fixed; inset: 0; z-index: 150;
+    background: rgba(7,6,10,.97);
+    backdrop-filter: blur(28px) saturate(1.4);
+    -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .4s cubic-bezier(.16,1,.3,1);
+  }
+  .nav-mobile.open { opacity: 1; pointer-events: all; }
+
+  .nav-mobile ul {
+    list-style: none; text-align: center;
+    display: flex; flex-direction: column; gap: .2rem;
+  }
+  .nav-mobile li {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .45s cubic-bezier(.16,1,.3,1),
+                transform .45s cubic-bezier(.16,1,.3,1);
+  }
+  .nav-mobile.open li:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:.08s; }
+  .nav-mobile.open li:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:.14s; }
+  .nav-mobile.open li:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:.20s; }
+  .nav-mobile.open li:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:.26s; }
+  .nav-mobile.open li:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:.32s; }
+  .nav-mobile.open li:nth-child(6) { opacity:1; transform:translateY(0); transition-delay:.38s; }
+
+  .nav-mobile a {
+    font-family: var(--ff-display); font-weight: 400;
+    font-size: clamp(2.2rem, 9vw, 3.8rem);
+    color: rgba(237,232,224,.55); text-decoration: none;
+    letter-spacing: .01em; display: block; padding: .4rem 2rem;
+    transition: color .25s;
+    position: relative;
+  }
+  .nav-mobile a::after {
+    content: '';
+    position: absolute; bottom: .1rem; left: 2rem; right: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0; transform: scaleX(0);
+    transition: opacity .25s, transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .nav-mobile a:hover { color: var(--cream); }
+  .nav-mobile a:hover::after { opacity: .5; transform: scaleX(1); }
+
+  .nav-mobile .mobile-cta {
+    font-family: var(--ff-ui) !important;
+    font-size: 1rem !important;
+    color: var(--gold) !important;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    border: 1px solid var(--border-gold);
+    padding: .7rem 2.4rem !important;
+    margin-top: .8rem;
+    display: inline-block;
+    transition: background .25s, color .25s !important;
+  }
+  .nav-mobile .mobile-cta:hover { background: rgba(200,169,110,.1); color: var(--gold-light) !important; }
+  .nav-mobile .mobile-cta::after { display: none; }
+
+  .nav-mobile-footer {
+    position: absolute; bottom: 3rem;
+    font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(255,255,255,.18);
   }
 </style>
 </head>
@@ -209,7 +297,23 @@
     <li><a href="sobre.html" style="color:#fff">Sobre</a></li>
     <li><a href="index.html#contact" class="nav-cta">Vamos Conversar</a></li>
   </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+<div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+  <ul>
+    <li><a href="trabalhos.html">Trabalhos</a></li>
+    <li><a href="index.html#serve">Quem Atendo</a></li>
+    <li><a href="index.html#deliver">Serviços</a></li>
+    <li><a href="index.html#method">Metodologia</a></li>
+    <li><a href="sobre.html">Sobre</a></li>
+    <li><a href="index.html#contact" class="mobile-cta">Vamos Conversar</a></li>
+  </ul>
+  <span class="nav-mobile-footer">Romário Alves · UX/UI Design</span>
+</div>
 
 <div class="about-hero">
   <div>
@@ -370,6 +474,24 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Hamburger menu
+  const burger    = document.getElementById('nav-burger');
+  const mobileNav = document.getElementById('nav-mobile');
+  const toggleMenu = (open) => {
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    mobileNav.classList.toggle('open', open);
+    mobileNav.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggleMenu(!burger.classList.contains('open')));
+  mobileNav.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => toggleMenu(false))
+  );
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && burger.classList.contains('open')) toggleMenu(false);
+  });
 </script>
 </body>
 </html>
