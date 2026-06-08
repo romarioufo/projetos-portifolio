@@ -189,7 +189,6 @@
     .work-card--wide { grid-column: 1; }
     .section { padding:5rem 1.5rem; }
     footer { flex-direction:column; gap:.8rem; text-align:center; }
-    .nav-burger { display: flex; }
   }
 
   /* ── HAMBURGER & MOBILE NAV ────────────────────────────────── */
@@ -277,6 +276,9 @@
     position: absolute; bottom: 3rem;
     font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
     color: rgba(255,255,255,.18);
+  }
+  @media (max-width: 900px) {
+    .nav-burger { display: flex; }
   }
 </style>
 </head>
