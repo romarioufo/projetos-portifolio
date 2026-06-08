@@ -21,7 +21,7 @@
     --gold-light:  #e8d4a8;
     --gold-dim:    rgba(200,169,110,.3);
     --cream:       #ede8e0;
-    --cream-muted: #888096;
+    --cream-muted: #b0a8c0;
     --border:      rgba(255,255,255,.07);
     --border-gold: rgba(200,169,110,.18);
     --glass-bg:    rgba(255,255,255,.042);
@@ -465,36 +465,47 @@
   /* ── SERVE ─────────────────────────────────────────────────── */
   #serve { background: var(--bg-2); border-bottom: 1px solid var(--border); }
 
-  .serve-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; margin-top: 4rem; align-items: start;
-  }
   .serve-intro {
     font-family: var(--ff-display); font-weight: 400;
-    font-size: clamp(2rem, 3.2vw, 2.9rem); line-height: 1.22; color: var(--cream);
+    font-size: clamp(1.7rem, 2.8vw, 2.5rem); line-height: 1.28; color: var(--cream);
+    max-width: 560px; margin-top: 3rem; margin-bottom: 4rem;
   }
   .serve-intro em { font-style: italic; color: var(--gold-light); font-weight: 300; }
 
-  .serve-cards { display: flex; flex-direction: column; gap: 0; }
+  .serve-cards {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
   .serve-card {
-    padding: 1.8rem 1.4rem;
     background: var(--glass-bg-2);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    display: flex; gap: 1.4rem; align-items: flex-start; cursor: none;
-    transition: background .3s, padding-left .3s var(--ease-out);
+    display: flex; flex-direction: column; cursor: none;
+    transition: background .3s;
     position: relative; overflow: hidden;
   }
-  .serve-card:last-child { border-bottom: 1px solid var(--border); }
+  .serve-card:hover { background: rgba(255,255,255,.06); }
   .serve-card::before {
     content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-    background: linear-gradient(to bottom, var(--prism-1), var(--prism-2), var(--prism-3));
-    opacity: 0; transition: opacity .3s;
+    position: absolute; left: 0; top: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, var(--prism-1), var(--prism-2), var(--prism-3));
+    opacity: 0; transition: opacity .3s; z-index: 3;
   }
-  .serve-card:hover { background: rgba(255,255,255,.06); padding-left: 1.8rem; }
   .serve-card:hover::before { opacity: 1; }
+
+  /* Serve scene: atmospheric CSS illustration */
+  .serve-scene {
+    width: 100%; height: 150px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .serve-scene svg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+  .serve-card-body {
+    padding: 1.8rem 1.4rem;
+    display: flex; gap: 1.2rem; align-items: flex-start; flex: 1;
+  }
 
   .serve-icon {
     width: 2.2rem; height: 2.2rem; border: 1px solid var(--border);
@@ -707,6 +718,93 @@
   .footer-tag  { font-size: .68rem; font-weight: 300; color: var(--cream-muted); letter-spacing: .06em; }
   .footer-tag span { color: var(--gold); }
 
+  /* ── TRABALHOS ─────────────────────────────────────────────── */
+  #trabalhos { background: var(--bg); }
+  .works-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 5rem; margin-top: 2rem;
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .works-title {
+    font-family: var(--ff-display); font-weight: 400;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem); line-height: 1.05;
+  }
+  .works-title em { font-style: italic; color: var(--gold-light); font-weight: 300; }
+  .works-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .work-card {
+    background: var(--glass-bg-2);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    transition: background .3s;
+    cursor: none;
+  }
+  .work-card:hover { background: rgba(255,255,255,.055); }
+  .work-card-visual {
+    height: 200px; position: relative; overflow: hidden;
+    flex-shrink: 0; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; padding: 1rem;
+  }
+  .work-card-visual--ufo {
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 60%, rgba(200,169,110,.12) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 25% 30%, rgba(100,200,255,.06) 0%, transparent 60%),
+      linear-gradient(160deg, #080610 0%, #0c0a18 40%, #100d20 100%);
+  }
+  .work-card-visual--soon {
+    background:
+      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(180,140,255,.06) 0%, transparent 65%),
+      linear-gradient(160deg, #07060a 0%, #0b0912 100%);
+  }
+  .work-card-visual--soon2 {
+    background:
+      radial-gradient(ellipse 50% 50% at 40% 40%, rgba(100,180,255,.06) 0%, transparent 65%),
+      linear-gradient(160deg, #060a0a 0%, #091210 100%);
+  }
+  .work-tag {
+    font-size: .62rem; font-weight: 400; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--gold);
+    border: 1px solid var(--border-gold);
+    background: rgba(200,169,110,.08);
+    padding: .3rem .7rem;
+  }
+  .work-card-body { padding: 2rem 2rem 2.5rem; display: flex; flex-direction: column; flex: 1; }
+  .work-num {
+    font-family: var(--ff-display); font-size: 4rem; font-weight: 400;
+    color: rgba(200,169,110,.1); line-height: .9; font-style: italic;
+    margin-bottom: 1rem;
+  }
+  .work-card-body h3 {
+    font-family: var(--ff-display); font-size: 1.6rem; font-weight: 400;
+    color: var(--cream); margin-bottom: .8rem; letter-spacing: .01em;
+  }
+  .work-desc {
+    font-size: .84rem; font-weight: 300; color: var(--cream-muted);
+    line-height: 1.7; margin-bottom: 2rem; flex: 1;
+  }
+  .work-link {
+    font-size: .72rem; font-weight: 400; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold);
+    text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+    transition: gap .2s, color .2s;
+  }
+  .work-link:hover { gap: .9rem; color: var(--gold-light); }
+  .work-link--disabled { color: var(--cream-muted); pointer-events: none; }
+  /* prism top line on hover */
+  .work-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg,
+      transparent, rgba(180,140,255,.5), rgba(100,200,255,.5),
+      rgba(255,200,100,.4), transparent);
+    opacity: 0; transition: opacity .35s;
+  }
+  .work-card:hover::before { opacity: 1; }
+
   /* ── RESPONSIVE ────────────────────────────────────────────── */
   @media (max-width: 900px) {
     nav { padding: 1.2rem 1.5rem; }
@@ -715,7 +813,7 @@
     .hero-h1 { font-size: clamp(2.8rem, 10vw, 5rem); }
     .hero-bottom { flex-direction: column; align-items: flex-start; }
     .hero-actions { align-items: flex-start; }
-    .serve-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .serve-cards { grid-template-columns: 1fr; }
     .deliver-header { flex-direction: column; gap: 1.5rem; }
     .deliver-items { grid-template-columns: 1fr; }
     .step { grid-template-columns: 80px 1fr; gap: 1.5rem; padding: 2.5rem 1rem; }
@@ -723,6 +821,8 @@
     .why-grid { grid-template-columns: 1fr; gap: 3rem; }
     footer { flex-direction: column; gap: .8rem; text-align: center; }
     #hero { padding: 1.5rem; }
+    .works-grid { grid-template-columns: 1fr; }
+    .works-header { flex-direction: column; align-items: flex-start; margin-bottom: 3rem; }
   }
 </style>
 </head>
@@ -738,10 +838,11 @@
 <nav id="nav">
   <a href="#hero" class="nav-logo">Romário Alves</a>
   <ul class="nav-links">
+    <li><a href="trabalhos.html">Trabalhos</a></li>
     <li><a href="#serve">Quem Atendo</a></li>
-    <li><a href="#deliver">O Que Entrego</a></li>
+    <li><a href="#deliver">Serviços</a></li>
     <li><a href="#method">Metodologia</a></li>
-    <li><a href="#why">Por Que Eu</a></li>
+    <li><a href="sobre.html">Sobre</a></li>
     <li><a href="#contact" class="nav-cta">Vamos Conversar</a></li>
   </ul>
 </nav>
@@ -826,26 +927,165 @@
 <section id="serve">
   <div class="section">
     <span class="label reveal">Quem Atendo</span>
-    <div class="serve-grid">
-      <div class="serve-intro reveal d2">
-        Hotéis, pousadas e casas de temporada que querem uma <em>experiência digital à altura</em> da hospitalidade que já oferecem.
-      </div>
-      <div class="serve-cards">
-        <div class="serve-card reveal d2">
+    <div class="serve-intro reveal d2">
+      Hotéis, pousadas e casas de temporada que querem uma <em>experiência digital à altura</em> da hospitalidade que já oferecem.
+    </div>
+    <div class="serve-cards">
+
+      <div class="serve-card reveal d2">
+        <div class="serve-scene">
+          <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="hg1" cx="50%" cy="100%" r="60%">
+                <stop offset="0%" stop-color="rgba(200,169,110,.15)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="150" fill="#06080f"/>
+            <rect width="300" height="150" fill="url(#hg1)"/>
+            <!-- Stars -->
+            <circle cx="20"  cy="18" r="1"   fill="rgba(255,255,255,.5)"/>
+            <circle cx="55"  cy="10" r=".8"  fill="rgba(255,255,255,.4)"/>
+            <circle cx="240" cy="14" r="1"   fill="rgba(255,255,255,.5)"/>
+            <circle cx="275" cy="22" r=".7"  fill="rgba(255,255,255,.3)"/>
+            <circle cx="130" cy="8"  r=".9"  fill="rgba(255,255,255,.4)"/>
+            <!-- Building body -->
+            <rect x="70" y="30" width="160" height="120" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <!-- Roof accent -->
+            <rect x="70" y="30" width="160" height="3" fill="rgba(200,169,110,.25)"/>
+            <!-- Floor dividers -->
+            <line x1="70" y1="65"  x2="230" y2="65"  stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="70" y1="100" x2="230" y2="100" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <!-- Row 1 windows -->
+            <rect x="87"  y="40" width="18" height="14" rx="1" fill="rgba(200,169,110,.55)"/>
+            <rect x="115" y="40" width="18" height="14" rx="1" fill="rgba(200,169,110,.35)"/>
+            <rect x="143" y="40" width="18" height="14" rx="1" fill="rgba(200,169,110,.65)"/>
+            <rect x="171" y="40" width="18" height="14" rx="1" fill="rgba(200,169,110,.25)"/>
+            <rect x="199" y="40" width="18" height="14" rx="1" fill="rgba(200,169,110,.45)"/>
+            <!-- Row 2 windows -->
+            <rect x="87"  y="75" width="18" height="14" rx="1" fill="rgba(200,169,110,.40)"/>
+            <rect x="115" y="75" width="18" height="14" rx="1" fill="rgba(200,169,110,.60)"/>
+            <rect x="143" y="75" width="18" height="14" rx="1" fill="rgba(200,169,110,.30)"/>
+            <rect x="171" y="75" width="18" height="14" rx="1" fill="rgba(200,169,110,.55)"/>
+            <rect x="199" y="75" width="18" height="14" rx="1" fill="rgba(200,169,110,.20)"/>
+            <!-- Row 3 windows -->
+            <rect x="87"  y="110" width="18" height="14" rx="1" fill="rgba(200,169,110,.25)"/>
+            <rect x="115" y="110" width="18" height="14" rx="1" fill="rgba(200,169,110,.45)"/>
+            <rect x="143" y="110" width="18" height="14" rx="1" fill="rgba(200,169,110,.60)"/>
+            <rect x="171" y="110" width="18" height="14" rx="1" fill="rgba(200,169,110,.35)"/>
+            <rect x="199" y="110" width="18" height="14" rx="1" fill="rgba(200,169,110,.50)"/>
+            <!-- Ground glow -->
+            <ellipse cx="150" cy="150" rx="100" ry="12" fill="rgba(200,169,110,.07)"/>
+          </svg>
+        </div>
+        <div class="serve-card-body">
           <div class="serve-icon">🏨</div>
           <div>
             <h3>Hotéis & Pousadas</h3>
             <p>Sistemas de agendamento, check-in/check-out digital, painéis de gestão de hóspedes e experiências online que refletem a identidade da sua hospedagem.</p>
           </div>
         </div>
-        <div class="serve-card reveal d3">
+      </div>
+
+      <div class="serve-card reveal d3">
+        <div class="serve-scene">
+          <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="hg2" cx="30%" cy="40%" r="50%">
+                <stop offset="0%" stop-color="rgba(180,200,255,.06)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="150" fill="#040810"/>
+            <rect width="300" height="150" fill="url(#hg2)"/>
+            <!-- Stars -->
+            <circle cx="15"  cy="15" r="1.2" fill="rgba(255,255,255,.6)"/>
+            <circle cx="45"  cy="8"  r=".8"  fill="rgba(255,255,255,.4)"/>
+            <circle cx="100" cy="20" r="1"   fill="rgba(255,255,255,.5)"/>
+            <circle cx="160" cy="12" r=".7"  fill="rgba(255,255,255,.4)"/>
+            <circle cx="220" cy="6"  r="1.1" fill="rgba(255,255,255,.5)"/>
+            <circle cx="260" cy="18" r=".9"  fill="rgba(255,255,255,.35)"/>
+            <circle cx="285" cy="10" r=".7"  fill="rgba(255,255,255,.45)"/>
+            <circle cx="75"  cy="30" r=".6"  fill="rgba(200,220,255,.4)"/>
+            <circle cx="195" cy="28" r=".8"  fill="rgba(200,220,255,.3)"/>
+            <!-- Moon -->
+            <circle cx="260" cy="35" r="12" fill="rgba(240,230,200,.08)"/>
+            <circle cx="266" cy="31" r="10" fill="#040810"/>
+            <!-- Trees -->
+            <rect x="40" y="95" width="6" height="25" fill="rgba(255,255,255,.04)"/>
+            <polygon points="43,60 28,95 58,95" fill="rgba(255,255,255,.05)"/>
+            <polygon points="43,45 25,85 61,85" fill="rgba(255,255,255,.04)"/>
+            <rect x="230" y="100" width="5" height="20" fill="rgba(255,255,255,.04)"/>
+            <polygon points="232,68 218,100 247,100" fill="rgba(255,255,255,.05)"/>
+            <!-- House body -->
+            <rect x="90" y="75" width="120" height="75" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <!-- Roof -->
+            <polygon points="80,75 150,30 220,75" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+            <!-- Door -->
+            <rect x="135" y="110" width="30" height="40" rx="2" fill="rgba(200,169,110,.15)" stroke="rgba(200,169,110,.2)" stroke-width="1"/>
+            <!-- Windows -->
+            <rect x="100" y="88" width="30" height="22" rx="1" fill="rgba(200,169,110,.45)"/>
+            <rect x="170" y="88" width="30" height="22" rx="1" fill="rgba(200,169,110,.30)"/>
+            <!-- Light in door window -->
+            <rect x="142" y="117" width="16" height="12" rx="1" fill="rgba(200,169,110,.35)"/>
+            <!-- Ground glow -->
+            <ellipse cx="150" cy="150" rx="80" ry="10" fill="rgba(100,180,255,.04)"/>
+          </svg>
+        </div>
+        <div class="serve-card-body">
           <div class="serve-icon">🏡</div>
           <div>
             <h3>Casas de Temporada</h3>
             <p>Interfaces de reserva personalizadas, automações de comunicação com hóspedes e dashboards simples para quem gerencia de forma independente.</p>
           </div>
         </div>
-        <div class="serve-card reveal d4">
+      </div>
+
+      <div class="serve-card reveal d4">
+        <div class="serve-scene">
+          <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="hg3" cx="50%" cy="50%" r="55%">
+                <stop offset="0%" stop-color="rgba(180,140,255,.08)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+              <radialGradient id="hg3b" cx="70%" cy="30%" r="40%">
+                <stop offset="0%" stop-color="rgba(100,200,255,.06)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="150" fill="#07060c"/>
+            <rect width="300" height="150" fill="url(#hg3)"/>
+            <rect width="300" height="150" fill="url(#hg3b)"/>
+            <!-- Grid lines (interface/dashboard feel) -->
+            <line x1="0"   y1="50"  x2="300" y2="50"  stroke="rgba(180,140,255,.06)" stroke-width="1"/>
+            <line x1="0"   y1="100" x2="300" y2="100" stroke="rgba(180,140,255,.06)" stroke-width="1"/>
+            <line x1="75"  y1="0"   x2="75"  y2="150" stroke="rgba(180,140,255,.05)" stroke-width="1"/>
+            <line x1="150" y1="0"   x2="150" y2="150" stroke="rgba(180,140,255,.05)" stroke-width="1"/>
+            <line x1="225" y1="0"   x2="225" y2="150" stroke="rgba(180,140,255,.05)" stroke-width="1"/>
+            <!-- Monitor/screen -->
+            <rect x="55" y="20" width="190" height="110" rx="4" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+            <!-- Screen content: bar chart -->
+            <rect x="75"  y="95" width="18" height="25" rx="1" fill="rgba(200,169,110,.4)"/>
+            <rect x="103" y="78" width="18" height="42" rx="1" fill="rgba(200,169,110,.55)"/>
+            <rect x="131" y="62" width="18" height="58" rx="1" fill="rgba(200,169,110,.7)"/>
+            <rect x="159" y="71" width="18" height="49" rx="1" fill="rgba(200,169,110,.5)"/>
+            <rect x="187" y="54" width="18" height="66" rx="1" fill="rgba(200,169,110,.65)"/>
+            <!-- Chart baseline -->
+            <line x1="68" y1="120" x2="215" y2="120" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+            <!-- Screen header bar -->
+            <rect x="55" y="20" width="190" height="28" rx="4" fill="rgba(255,255,255,.04)"/>
+            <circle cx="72" cy="34" r="4" fill="rgba(255,80,80,.3)"/>
+            <circle cx="86" cy="34" r="4" fill="rgba(255,180,40,.25)"/>
+            <circle cx="100" cy="34" r="4" fill="rgba(80,200,120,.2)"/>
+            <!-- Glows on bars -->
+            <rect x="131" y="62" width="18" height="10" rx="1" fill="rgba(255,255,255,.08)"/>
+            <!-- Stand -->
+            <rect x="143" y="130" width="14" height="8" rx="1" fill="rgba(255,255,255,.04)"/>
+            <rect x="130" y="138" width="40" height="4" rx="2" fill="rgba(255,255,255,.05)"/>
+          </svg>
+        </div>
+        <div class="serve-card-body">
           <div class="serve-icon">⚡</div>
           <div>
             <h3>Outros Negócios</h3>
@@ -853,6 +1093,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -941,6 +1182,60 @@
         <h3>Acompanhamento Contínuo</h3>
         <p>Não entrego e sumo. Estou junto na implementação, nos ajustes e na evolução do que construímos.</p>
       </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="prism-line reveal"></div>
+
+<!-- ============================================================
+     TRABALHOS
+============================================================ -->
+<section id="trabalhos">
+  <div class="section">
+    <span class="label reveal">Trabalhos</span>
+    <div class="works-header">
+      <h2 class="works-title reveal d2">Projetos que<br/><em>saíram do papel</em></h2>
+      <a href="trabalhos.html" class="btn-ghost reveal d3">Ver todos <span class="arrow">→</span></a>
+    </div>
+    <div class="works-grid">
+
+      <article class="work-card reveal d2">
+        <div class="work-card-visual work-card-visual--ufo">
+          <span class="work-tag">Sistema · SaaS</span>
+        </div>
+        <div class="work-card-body">
+          <p class="work-num">01</p>
+          <h3>UFO Burguers</h3>
+          <p class="work-desc">Sistema completo de gestão de delivery — pedidos em tempo real, cardápio digital, clientes, motoristas e caixa. Do Figma ao ar em produção.</p>
+          <a href="trabalhos/ufo-burguers.html" class="work-link">Ver projeto <span>→</span></a>
+        </div>
+      </article>
+
+      <article class="work-card reveal d3">
+        <div class="work-card-visual work-card-visual--soon">
+          <span class="work-tag">Em breve</span>
+        </div>
+        <div class="work-card-body">
+          <p class="work-num">02</p>
+          <h3>Reservas Boutique</h3>
+          <p class="work-desc">Sistema de reservas e check-in digital para pousada boutique. Interface clean, gestão simplificada para o anfitrião independente.</p>
+          <a href="#" class="work-link work-link--disabled">Em breve</a>
+        </div>
+      </article>
+
+      <article class="work-card reveal d4">
+        <div class="work-card-visual work-card-visual--soon2">
+          <span class="work-tag">Em breve</span>
+        </div>
+        <div class="work-card-body">
+          <p class="work-num">03</p>
+          <h3>Dashboard Temporada</h3>
+          <p class="work-desc">Painel de controle para gestão de imóveis por temporada. Calendário unificado, automação de mensagens e relatórios de ocupação.</p>
+          <a href="#" class="work-link work-link--disabled">Em breve</a>
+        </div>
+      </article>
 
     </div>
   </div>
