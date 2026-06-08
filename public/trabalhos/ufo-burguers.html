@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UFO Burguers — Romário Alves</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:          #07060a;
+    --bg-2:        #0d0b12;
+    --gold:        #c8a96e;
+    --gold-light:  #e8d4a8;
+    --cream:       #ede8e0;
+    --cream-muted: #b0a8c0;
+    --border:      rgba(255,255,255,.07);
+    --border-gold: rgba(200,169,110,.18);
+    --glass-bg:    rgba(255,255,255,.042);
+    --glass-bg-2:  rgba(255,255,255,.028);
+    --ease-out:    cubic-bezier(.16,1,.3,1);
+    --ff-display:  'Cormorant Garamond', Georgia, serif;
+    --ff-ui:       'Syne', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { background: var(--bg); color: var(--cream); font-family: var(--ff-ui); font-weight: 300; line-height: 1.6; overflow-x: hidden; cursor: none; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .028; pointer-events: none; z-index: 9000; }
+  .cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform .1s; }
+  .cursor-ring { position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1px solid rgba(200,169,110,.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease-out), transform .9s var(--ease-out); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s} .d5{transition-delay:.5s}
+  .prism-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(180,140,255,.4) 18%, rgba(100,200,255,.5) 35%, rgba(200,255,180,.4) 50%, rgba(255,180,100,.38) 65%, rgba(255,120,180,.3) 82%, transparent); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform .9s var(--ease-out), opacity .6s; }
+  .prism-line.in { transform: scaleX(1); opacity: 1; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.4rem 3rem; transition: background .5s; }
+  nav.scrolled { background: rgba(7,6,10,.72); backdrop-filter: blur(28px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--ff-ui); font-weight: 400; font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: .74rem; font-weight: 300; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.65); text-decoration: none; transition: color .25s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta { font-size: .74rem !important; font-weight: 400 !important; color: #fff !important; border: 1px solid rgba(255,255,255,.25) !important; padding: .45rem 1.1rem; border-radius: 2px; transition: background .25s !important; }
+  .nav-cta:hover { background: rgba(255,255,255,.12) !important; }
+  .label { display: inline-block; font-size: .66rem; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; }
+  .label::before { content: '—  '; opacity: .45; }
+  .w { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+
+  /* ── PROJECT HERO ──────────────────────────────────────────── */
+  .project-hero {
+    min-height: 70vh;
+    display: flex; align-items: flex-end;
+    padding: 10rem 3rem 5rem;
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 55%, rgba(200,169,110,.1) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 30%, rgba(100,200,255,.05) 0%, transparent 55%),
+      linear-gradient(160deg, #060410 0%, #0a0818 40%, #0e0c22 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .project-hero-bg {
+    position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  }
+  .project-hero-bg svg { width: 100%; height: 100%; opacity: .35; }
+  .project-hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .project-back {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--cream-muted); text-decoration: none;
+    margin-bottom: 3rem; transition: color .2s;
+  }
+  .project-back:hover { color: var(--gold); }
+  .project-tag-row { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .project-tag {
+    font-size: .62rem; font-weight: 400; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--border-gold);
+    background: rgba(200,169,110,.08); padding: .3rem .8rem;
+  }
+  .project-title {
+    font-family: var(--ff-display); font-weight: 400;
+    font-size: clamp(3.5rem, 8vw, 9rem); line-height: .92;
+    letter-spacing: -.01em; margin-bottom: 2rem;
+  }
+  .project-title em { font-style: italic; color: var(--gold-light); font-weight: 300; }
+  .project-meta-row {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    padding-top: 2rem; border-top: 1px solid var(--border);
+  }
+  .project-meta-item { }
+  .project-meta-label { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+  .project-meta-value { font-size: .85rem; font-weight: 300; color: var(--cream); }
+
+  /* ── OVERVIEW ──────────────────────────────────────────────── */
+  .overview {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: start;
+    border-bottom: 1px solid var(--border);
+  }
+  .overview-title {
+    font-family: var(--ff-display); font-weight: 400;
+    font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .overview-title em { font-style: italic; color: var(--gold-light); }
+  .overview p { font-size: .92rem; font-weight: 300; color: var(--cream-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+  .overview p strong { font-weight: 400; color: var(--cream); }
+
+  /* ── CHALLENGE / SOLUTION BLOCKS ──────────────────────────── */
+  .blocks {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .block {
+    background: var(--glass-bg-2);
+    padding: 3.5rem 3rem;
+  }
+  .block-num {
+    font-family: var(--ff-display); font-size: 4rem; font-weight: 400;
+    color: rgba(200,169,110,.1); line-height: .85; font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+  .block h3 {
+    font-family: var(--ff-display); font-size: 1.8rem; font-weight: 400;
+    color: var(--cream); margin-bottom: 1.2rem;
+  }
+  .block p { font-size: .88rem; font-weight: 300; color: var(--cream-muted); line-height: 1.85; margin-bottom: 1rem; }
+  .block p:last-child { margin-bottom: 0; }
+  .block p strong { font-weight: 400; color: var(--cream); }
+
+  /* ── FEATURES ──────────────────────────────────────────────── */
+  .features-section {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .features-header { margin-bottom: 4rem; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--glass-bg-2);
+    border: 1px solid var(--border);
+    padding: 2rem 1.8rem;
+    transition: background .3s, border-color .3s;
+  }
+  .feature-card:hover { background: rgba(255,255,255,.05); border-color: var(--border-gold); }
+  .feature-icon {
+    width: 2.2rem; height: 2.2rem; margin-bottom: 1.2rem;
+    color: rgba(200,169,110,.5);
+  }
+  .feature-card h4 { font-size: .8rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); margin-bottom: .6rem; }
+  .feature-card p { font-size: .82rem; font-weight: 300; color: var(--cream-muted); line-height: 1.65; }
+
+  /* ── STACK ─────────────────────────────────────────────────── */
+  .stack-section {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 6rem; align-items: start;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-pills { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+  .stack-pill {
+    font-size: .7rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--cream-muted); border: 1px solid var(--border);
+    padding: .4rem 1rem; transition: color .2s, border-color .2s;
+  }
+  .stack-pill:hover { color: var(--gold); border-color: var(--border-gold); }
+  .stack-desc p { font-size: .92rem; font-weight: 300; color: var(--cream-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+  .stack-desc p strong { color: var(--cream); font-weight: 400; }
+
+  /* ── RESULT ────────────────────────────────────────────────── */
+  .result-section {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .result-stat {
+    background: var(--glass-bg-2);
+    padding: 3rem 2rem; text-align: center;
+  }
+  .result-stat-value {
+    font-family: var(--ff-display); font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 400; color: var(--gold); font-style: italic; line-height: 1;
+    margin-bottom: .6rem;
+  }
+  .result-stat-label { font-size: .72rem; font-weight: 300; letter-spacing: .1em; text-transform: uppercase; color: var(--cream-muted); }
+
+  /* ── NEXT PROJECT ──────────────────────────────────────────── */
+  .next-project {
+    padding: 7rem 3rem;
+    max-width: 1200px; margin: 0 auto;
+    text-align: center;
+  }
+  .next-project p { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .next-project h2 { font-family: var(--ff-display); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; margin-bottom: 3rem; color: var(--cream); }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: .75rem;
+    background: var(--glass-bg); backdrop-filter: blur(20px);
+    color: var(--cream); font-family: var(--ff-ui); font-size: .76rem;
+    font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
+    text-decoration: none; padding: .95rem 2rem;
+    border: 1px solid var(--border-gold); cursor: none;
+    transition: background .3s, border-color .3s, transform .2s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary:hover { background: rgba(200,169,110,.12); border-color: var(--gold); transform: translateY(-2px); }
+
+  footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: .68rem; font-weight: 300; color: var(--cream-muted); }
+  .footer-tag { font-size: .68rem; font-weight: 300; color: var(--cream-muted); }
+  .footer-tag span { color: var(--gold); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .project-hero { padding: 7rem 1.5rem 4rem; }
+    .overview, .stack-section { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .blocks { grid-template-columns: 1fr; padding: 0 1.5rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .result-stats { grid-template-columns: repeat(2,1fr); }
+    .features-section, .result-section, .next-project { padding: 4rem 1.5rem; }
+    .project-meta-row { gap: 1.5rem; }
+    footer { flex-direction: column; gap: .8rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">Romário Alves</a>
+  <ul class="nav-links">
+    <li><a href="../trabalhos.html" style="color:#fff">Trabalhos</a></li>
+    <li><a href="../index.html#serve">Quem Atendo</a></li>
+    <li><a href="../index.html#deliver">Serviços</a></li>
+    <li><a href="../index.html#method">Metodologia</a></li>
+    <li><a href="../sobre.html">Sobre</a></li>
+    <li><a href="../index.html#contact" class="nav-cta">Vamos Conversar</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="project-hero-bg">
+    <svg viewBox="0 0 1440 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <!-- Stars -->
+      <circle cx="120"  cy="80"  r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle cx="340"  cy="40"  r="1"   fill="rgba(255,255,255,.4)"/>
+      <circle cx="680"  cy="90"  r="1.2" fill="rgba(255,255,255,.5)"/>
+      <circle cx="900"  cy="30"  r="1"   fill="rgba(255,255,255,.3)"/>
+      <circle cx="1100" cy="70"  r="1.5" fill="rgba(255,255,255,.4)"/>
+      <circle cx="1300" cy="50"  r="1"   fill="rgba(255,255,255,.5)"/>
+      <circle cx="200"  cy="140" r=".8"  fill="rgba(200,220,255,.4)"/>
+      <circle cx="550"  cy="110" r="1"   fill="rgba(200,220,255,.3)"/>
+      <circle cx="800"  cy="55"  r=".9"  fill="rgba(200,220,255,.4)"/>
+      <circle cx="1050" cy="120" r="1.1" fill="rgba(200,220,255,.3)"/>
+      <!-- UFO silhouette (large, right side) -->
+      <g transform="translate(920,180) scale(2.2)" opacity=".18">
+        <ellipse cx="80" cy="40" rx="75" ry="18" fill="white"/>
+        <ellipse cx="80" cy="32" rx="50" ry="28" fill="white"/>
+        <ellipse cx="80" cy="18" rx="22" ry="18" fill="white"/>
+        <ellipse cx="80" cy="50" rx="75" ry="10" fill="rgba(200,169,110,.6)"/>
+        <!-- Lights -->
+        <circle cx="20"  cy="46" r="3" fill="rgba(200,169,110,.8)"/>
+        <circle cx="50"  cy="52" r="3" fill="rgba(100,200,255,.7)"/>
+        <circle cx="80"  cy="54" r="3" fill="rgba(200,169,110,.8)"/>
+        <circle cx="110" cy="52" r="3" fill="rgba(255,140,100,.7)"/>
+        <circle cx="140" cy="46" r="3" fill="rgba(200,169,110,.8)"/>
+      </g>
+      <!-- Grid lines -->
+      <line x1="0" y1="300" x2="1440" y2="300" stroke="rgba(200,169,110,.04)" stroke-width="1"/>
+      <line x1="0" y1="500" x2="1440" y2="500" stroke="rgba(200,169,110,.03)" stroke-width="1"/>
+      <line x1="480" y1="0" x2="480" y2="600" stroke="rgba(180,140,255,.03)" stroke-width="1"/>
+      <line x1="960" y1="0" x2="960" y2="600" stroke="rgba(180,140,255,.03)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="project-hero-content">
+    <a href="../trabalhos.html" class="project-back">← Voltar para trabalhos</a>
+    <div class="project-tag-row">
+      <span class="project-tag">Sistema · SaaS</span>
+      <span class="project-tag">Delivery</span>
+      <span class="project-tag">React · Firebase</span>
+      <span class="project-tag">Em produção</span>
+    </div>
+    <h1 class="project-title reveal">UFO<br/><em>Burguers</em></h1>
+    <div class="project-meta-row reveal d2">
+      <div class="project-meta-item">
+        <div class="project-meta-label">Ano</div>
+        <div class="project-meta-value">2024–2025</div>
+      </div>
+      <div class="project-meta-item">
+        <div class="project-meta-label">Tipo</div>
+        <div class="project-meta-value">Sistema de gestão completo</div>
+      </div>
+      <div class="project-meta-item">
+        <div class="project-meta-label">Plataforma</div>
+        <div class="project-meta-value">Web App (React)</div>
+      </div>
+      <div class="project-meta-item">
+        <div class="project-meta-label">Status</div>
+        <div class="project-meta-value">Em produção</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- OVERVIEW -->
+<div class="overview">
+  <div>
+    <h2 class="overview-title reveal">Do caos do<br/><em>delivery</em><br/>à operação sob controle</h2>
+  </div>
+  <div>
+    <p class="reveal d2">
+      O UFO Burguers nasceu de uma necessidade real: uma hamburgueria com identidade espacial temática precisava de um sistema de gestão de pedidos que refletisse a personalidade da marca e, ao mesmo tempo, <strong>resolvesse a operação de verdade</strong>.
+    </p>
+    <p class="reveal d3">
+      O sistema foi desenhado do zero — desde os fluxos de trabalho da equipe até cada interação na tela. O resultado é um <strong>SaaS completo</strong> que cobre todo o ciclo do delivery: do pedido ao pagamento, do cardápio ao caixa.
+    </p>
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- CHALLENGE / SOLUTION -->
+<div class="blocks">
+  <div class="block reveal">
+    <div class="block-num">01</div>
+    <h3>O Desafio</h3>
+    <p>
+      Gestão de pedidos feita no papel e no WhatsApp. Sem histórico de clientes, sem visibilidade do status dos pedidos em tempo real, sem controle de caixa integrado.
+    </p>
+    <p>
+      A equipe perdia tempo confirmando pedidos manualmente, os clientes ficavam sem retorno e o dono não tinha visibilidade do que acontecia na operação — especialmente nos horários de pico.
+    </p>
+  </div>
+  <div class="block reveal d2">
+    <div class="block-num">02</div>
+    <h3>A Solução</h3>
+    <p>
+      Sistema Kanban em tempo real com Firebase — cada pedido avança pelas etapas <strong>Aguardando → Confirmado → Preparando → Entregue</strong> com atualização instantânea para toda a equipe.
+    </p>
+    <p>
+      Cardápio digital com 26 itens gerenciáveis, perfis de clientes com histórico, gestão de motoristas, caixa integrado e programa de fidelidade com pontos e cupons.
+    </p>
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- FEATURES -->
+<div class="features-section">
+  <div class="features-header">
+    <span class="label reveal">Funcionalidades</span>
+    <h2 class="reveal d2" style="font-family:var(--ff-display);font-weight:400;font-size:clamp(2rem,3.5vw,3rem);">Tudo que a operação precisava</h2>
+  </div>
+  <div class="features-grid">
+
+    <div class="feature-card reveal d1">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      <h4>Kanban em Tempo Real</h4>
+      <p>Pedidos avançam por 6 etapas com sincronização instantânea via Firestore. Toda a equipe vê o mesmo estado, ao mesmo tempo.</p>
+    </div>
+
+    <div class="feature-card reveal d2">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <h4>Cardápio Digital</h4>
+      <p>26 itens com fotos, descrições, preços e categorias — tudo editável pelo painel admin. Sem atualizar código.</p>
+    </div>
+
+    <div class="feature-card reveal d3">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <h4>Gestão de Clientes</h4>
+      <p>Perfis com telefone, endereço, histórico de pedidos e pontos de fidelidade acumulados. Base de dados que cresce a cada entrega.</p>
+    </div>
+
+    <div class="feature-card reveal d1">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4l3 3"/>
+      </svg>
+      <h4>Motoristas & Rotas</h4>
+      <p>Cadastro de entregadores, atribuição de pedidos e mapa com localização do restaurante integrado com Leaflet.</p>
+    </div>
+
+    <div class="feature-card reveal d2">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/>
+      </svg>
+      <h4>Caixa Integrado</h4>
+      <p>Controle de pagamentos por PIX, cartão e dinheiro. Fechamento de caixa com relatório de movimentação.</p>
+    </div>
+
+    <div class="feature-card reveal d3">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <h4>Fidelidade & Cupons</h4>
+      <p>Programa de pontos com log de transações, recompensas configuráveis e sistema de cupons de desconto.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- STACK -->
+<div class="stack-section">
+  <div>
+    <span class="label reveal">Stack</span>
+    <h2 class="reveal d2" style="font-family:var(--ff-display);font-weight:400;font-size:clamp(1.8rem,2.8vw,2.5rem);line-height:1.2;">Tecnologia a serviço da operação</h2>
+    <div class="stack-pills reveal d3">
+      <span class="stack-pill">React 19</span>
+      <span class="stack-pill">Firebase</span>
+      <span class="stack-pill">Firestore</span>
+      <span class="stack-pill">Vite</span>
+      <span class="stack-pill">Tailwind CSS 4</span>
+      <span class="stack-pill">Leaflet</span>
+      <span class="stack-pill">React Router</span>
+      <span class="stack-pill">Lucide Icons</span>
+    </div>
+  </div>
+  <div class="stack-desc">
+    <p class="reveal d2">
+      O front-end é um <strong>React SPA</strong> servido via Firebase Hosting. Toda a camada de dados usa <strong>Firestore com listeners em tempo real</strong> — quando um pedido muda de status, todos os dispositivos conectados veem a atualização instantaneamente, sem polling.
+    </p>
+    <p class="reveal d3">
+      A autenticação usa Firebase Auth com <strong>Google Sign-in e verificação por telefone</strong>, permitindo acesso segmentado: operadores acessam o painel de pedidos, administradores acessam o painel completo com relatórios e configurações.
+    </p>
+    <p class="reveal d4">
+      O mapa de entregas é integrado com <strong>Leaflet + OpenStreetMap</strong>, exibindo as coordenadas do restaurante e os endereços de entrega georreferenciados.
+    </p>
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- RESULT -->
+<div class="result-section">
+  <span class="label reveal">Resultado</span>
+  <h2 class="reveal d2" style="font-family:var(--ff-display);font-weight:400;font-size:clamp(2rem,3.5vw,3rem);max-width:16ch;">Do papel ao ar — em produção</h2>
+  <div class="result-stats">
+    <div class="result-stat reveal d2">
+      <div class="result-stat-value">26</div>
+      <div class="result-stat-label">Itens no cardápio</div>
+    </div>
+    <div class="result-stat reveal d3">
+      <div class="result-stat-value">6</div>
+      <div class="result-stat-label">Etapas do Kanban</div>
+    </div>
+    <div class="result-stat reveal d4">
+      <div class="result-stat-value">100%</div>
+      <div class="result-stat-label">Tempo real</div>
+    </div>
+    <div class="result-stat reveal d5">
+      <div class="result-stat-value">∞</div>
+      <div class="result-stat-label">Operação sem papel</div>
+    </div>
+  </div>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<!-- NEXT PROJECT -->
+<div class="next-project">
+  <p class="reveal">Próximo projeto</p>
+  <h2 class="reveal d2">Reservas Boutique</h2>
+  <a href="../trabalhos.html" class="btn-primary reveal d3">
+    Ver todos os trabalhos
+    <span>→</span>
+  </a>
+</div>
+
+<div class="prism-line reveal"></div>
+
+<footer>
+  <p class="footer-copy">© 2025 Romário Alves. Todos os direitos reservados.</p>
+  <p class="footer-tag">Design com <span>método</span>, alma e resultado.</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+    ring.style.left   = e.clientX + 'px'; ring.style.top   = e.clientY + 'px';
+  });
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
